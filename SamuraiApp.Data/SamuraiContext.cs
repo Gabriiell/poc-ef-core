@@ -17,5 +17,11 @@ namespace SamuraiApp.Data
             var connection = "Server = (localdb)\\mssqllocaldb; Database = SamuraiAppData; Trusted_Connection = True; ";
             options.UseSqlServer(connection);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SamuraiBattle>()
+                .HasKey(s => new { s.SamuraiId, s.BattleId });
+        }
     }
 }
