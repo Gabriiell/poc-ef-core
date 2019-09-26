@@ -137,6 +137,10 @@
       <Project>{51d65a9a-236c-496b-a82d-01a16684c36e}</Project>
       <Name>SamuraiApp.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SamuraiApp.Domain\SamuraiApp.Domain.csproj">
+      <Project>{97A3B900-CFC9-47CC-A0D8-491D199E7198}</Project>
+      <Name>SamuraiApp.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
