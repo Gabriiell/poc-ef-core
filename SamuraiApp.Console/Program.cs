@@ -13,12 +13,10 @@ namespace SamuraiApp.Console
         static void Main(string[] args)
         {
             InsertSamurai();
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            //System.Console.WriteLine("Hello World!");
-            //System.Console.ReadKey();
+            InsertMultipleSamurai();
+            InsertMultipleObjects();
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            System.Console.ReadKey();
         }
 
         private static void InsertSamurai()
@@ -31,6 +29,48 @@ namespace SamuraiApp.Console
             using (var context = new SamuraiContext())
             {
                 context.Samurais.Add(samurai);
+                context.SaveChanges();
+            }
+        }
+
+        private static void InsertMultipleSamurai()
+        {
+            var samurais = new List<Samurai>()
+            {
+                new Samurai
+                {
+                    Name = "batch pepe 1"
+                },
+                new Samurai
+                {
+                    Name = "batch pepe 2"
+                }
+            };
+
+            using (var context = new SamuraiContext())
+            {
+                context.Samurais.AddRange(samurais);
+                context.SaveChanges();
+            }
+        }
+
+        private static void InsertMultipleObjects()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Pepe de la batalla"
+            };
+
+            var battle = new Battle
+            {
+                Name = "Super battle de pepe",
+                StartDate = new DateTime(1575, 1, 1),
+                EndDate = new DateTime(1575, 2, 2)
+            };
+
+            using (var context = new SamuraiContext())
+            {
+                context.AddRange(samurai, battle);
                 context.SaveChanges();
             }
         }
