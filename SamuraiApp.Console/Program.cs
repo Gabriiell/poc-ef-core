@@ -19,10 +19,17 @@ namespace SamuraiApp.Console
             //InsertMultipleObjects();
             UpdateSamurais();
             QueryAndUpdateBattleDisconnected();
-
+            DeleteSamurai();
             SimpleQuerySamurais();
 
             System.Console.ReadKey();
+        }
+
+        private static void DeleteSamurai()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            _context.Samurais.Remove(samurai);
+            _context.SaveChanges();
         }
 
         private static void QueryAndUpdateBattleDisconnected()
