@@ -12,11 +12,22 @@ namespace SamuraiApp.Console
     {
         static void Main(string[] args)
         {
-            InsertSamurai();
-            InsertMultipleSamurai();
-            InsertMultipleObjects();
+            //InsertSamurai();
+            //InsertMultipleSamurai();
+            //InsertMultipleObjects();
+            SimpleQuerySamurais();
 
             System.Console.ReadKey();
+        }
+
+        private static void SimpleQuerySamurais()
+        {
+            using (var context = new SamuraiContext())
+            {
+                context.Samurais
+                    .ToList()
+                    .ForEach(s => System.Console.WriteLine(s.Name));
+            }
         }
 
         private static void InsertSamurai()
