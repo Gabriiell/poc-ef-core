@@ -10,24 +10,31 @@ namespace SamuraiApp.Console
 {
     class Program
     {
+        private readonly static SamuraiContext _context = new SamuraiContext();
+
         static void Main(string[] args)
         {
             //InsertSamurai();
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
+            UpdateSamurais();
             SimpleQuerySamurais();
 
             System.Console.ReadKey();
         }
 
+        private static void UpdateSamurais()
+        {
+            var samurais = _context.Samurais.ToList();
+            samurais.ForEach(s => s.Name += " San");
+            _context.SaveChanges();
+        }
+
         private static void SimpleQuerySamurais()
         {
-            using (var context = new SamuraiContext())
-            {
-                context.Samurais
-                    .ToList()
-                    .ForEach(s => System.Console.WriteLine(s.Name));
-            }
+            _context.Samurais
+                .ToList()
+                .ForEach(s => System.Console.WriteLine(s.Name));
         }
 
         private static void InsertSamurai()
@@ -37,11 +44,8 @@ namespace SamuraiApp.Console
                 Name = "Pepe"
             };
 
-            using (var context = new SamuraiContext())
-            {
-                context.Samurais.Add(samurai);
-                context.SaveChanges();
-            }
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
         }
 
         private static void InsertMultipleSamurai()
@@ -58,11 +62,8 @@ namespace SamuraiApp.Console
                 }
             };
 
-            using (var context = new SamuraiContext())
-            {
-                context.Samurais.AddRange(samurais);
-                context.SaveChanges();
-            }
+            _context.Samurais.AddRange(samurais);
+            _context.SaveChanges();
         }
 
         private static void InsertMultipleObjects()
@@ -79,11 +80,8 @@ namespace SamuraiApp.Console
                 EndDate = new DateTime(1575, 2, 2)
             };
 
-            using (var context = new SamuraiContext())
-            {
-                context.AddRange(samurai, battle);
-                context.SaveChanges();
-            }
+            _context.AddRange(samurai, battle);
+            _context.SaveChanges();
         }
     }
 }
