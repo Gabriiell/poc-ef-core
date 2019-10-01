@@ -18,9 +18,23 @@ namespace SamuraiApp.Console
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
             UpdateSamurais();
+            QueryAndUpdateBattleDisconnected();
+
             SimpleQuerySamurais();
 
             System.Console.ReadKey();
+        }
+
+        private static void QueryAndUpdateBattleDisconnected()
+        {
+            var battle = _context.Battles.First();
+            battle.EndDate = battle.EndDate.AddDays(10);
+
+            using (var anotherContext = new SamuraiContext())
+            {
+                anotherContext.Battles.Update(battle);
+                anotherContext.SaveChanges();
+            }
         }
 
         private static void UpdateSamurais()
