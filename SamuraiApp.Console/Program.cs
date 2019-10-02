@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
@@ -17,12 +18,57 @@ namespace SamuraiApp.Console
             //InsertSamurai();
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
-            UpdateSamurais();
-            QueryAndUpdateBattleDisconnected();
-            DeleteSamurai();
-            SimpleQuerySamurais();
+            //CreateSamuraiWithQuotes();
+            //AddQuoteToSamurai();
+            //SimpleQuerySamurais();
+            //UpdateQuoteDisconnected();
+            QueryQuotes();
 
             System.Console.ReadKey();
+        }
+
+        private static void UpdateQuoteDisconnected()
+        {
+            var samurai = _context.Samurais.Include(s => s.Quotes).First();
+            var quote = samurai.Quotes.First();
+
+            using (var otherContext = new SamuraiContext())
+            {
+                quote.Text += " updated disconnected";
+                otherContext.Entry(quote).State = EntityState.Modified;
+                otherContext.SaveChanges();
+            }
+        }
+
+        private static void AddQuoteToSamurai()
+        {
+            var samurai = _context.Samurais.First();
+            samurai.Quotes.Add(new Quote
+            {
+                Text = "quote 3"
+            });
+            _context.SaveChanges();
+        }
+
+        private static void CreateSamuraiWithQuotes()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Samurai con frases",
+                Quotes = new List<Quote>
+                {
+                    new Quote
+                    {
+                        Text = "quote 1"
+                    },
+                    new Quote
+                    {
+                        Text = "quote 2"
+                    }
+                }
+            };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
         }
 
         private static void DeleteSamurai()
@@ -53,9 +99,23 @@ namespace SamuraiApp.Console
 
         private static void SimpleQuerySamurais()
         {
-            _context.Samurais
+            _context.Samurais.Include(s => s.Quotes)
                 .ToList()
-                .ForEach(s => System.Console.WriteLine(s.Name));
+                .ForEach(s =>
+                {
+                    System.Console.WriteLine(s.Name);
+                    s.Quotes.ForEach(q => System.Console.WriteLine("\t" + q.Text));
+                });
+        }
+
+        private static void QueryQuotes()
+        {
+            _context.Quotes.Include(q => q.Samurai)
+                .ToList()
+                .ForEach(q =>
+                {
+                    System.Console.WriteLine(q.Text);
+                });
         }
 
         private static void InsertSamurai()
