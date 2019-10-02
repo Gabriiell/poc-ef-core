@@ -3,6 +3,7 @@ using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace SamuraiApp.Console
             //AddQuoteToSamurai();
             //SimpleQuerySamurais();
             //UpdateQuoteDisconnected();
-            QueryQuotes();
+            //QueryQuotes();
+            TestPerformance();
 
             System.Console.ReadKey();
         }
@@ -163,6 +165,50 @@ namespace SamuraiApp.Console
 
             _context.AddRange(samurai, battle);
             _context.SaveChanges();
+        }
+
+        private static void TestPerformance()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+
+            using (var firstContext = new SamuraiContext())
+            {
+                stopWatch.Start();
+
+                var samurais = firstContext.Samurais
+                    .Where(s => s.Quotes.Any(q => q.Text.Contains("3")))
+                    .ToList();
+
+                stopWatch.Stop();
+                // Get the elapsed time as a TimeSpan value.
+                TimeSpan ts = stopWatch.Elapsed;
+
+                // Format and display the TimeSpan value. 
+                string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours, ts.Minutes, ts.Seconds,
+                    ts.Milliseconds / 10);
+                System.Console.WriteLine("RunTime " + elapsedTime);
+            }
+
+            using (var secondContext = new SamuraiContext())
+            {
+                stopWatch.Start();
+
+                var samurais = secondContext.Quotes
+                    .Where(q => q.Text.Contains("3"))
+                    .Select(q => q.Samurai)
+                    .ToList();
+
+                stopWatch.Stop();
+                // Get the elapsed time as a TimeSpan value.
+                TimeSpan ts = stopWatch.Elapsed;
+
+                // Format and display the TimeSpan value. 
+                string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours, ts.Minutes, ts.Seconds,
+                    ts.Milliseconds / 10);
+                System.Console.WriteLine("RunTime " + elapsedTime);
+            }
         }
     }
 }
