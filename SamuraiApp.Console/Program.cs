@@ -24,9 +24,53 @@ namespace SamuraiApp.Console
             //SimpleQuerySamurais();
             //UpdateQuoteDisconnected();
             //QueryQuotes();
-            TestPerformance();
+            //TestPerformance();
+            AddBattleToSamurai();
 
             System.Console.ReadKey();
+        }
+
+        private static void AddBattleToSamurai()
+        {
+            var battle = new Battle
+            {
+                Name = "Super battle 2",
+                StartDate = new DateTime(1575, 1, 1),
+                EndDate = new DateTime(1575, 2, 2)
+            };
+
+            _context.Add(battle);
+
+            var samurai = _context.Samurais.Include(s => s.SamuraiBattles).First();
+            samurai.SamuraiBattles.Add(new SamuraiBattle { BattleId = battle.Id });
+            _context.SaveChanges();
+        }
+
+        private static void InsertSamuraiWithBattle()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Pepe de la batalla"
+            };
+
+            var battle = new Battle
+            {
+                Name = "Super battle",
+                StartDate = new DateTime(1575, 1, 1),
+                EndDate = new DateTime(1575, 2, 2)
+            };
+
+            _context.AddRange(samurai, battle);
+
+            var samuraiBattle = new SamuraiBattle
+            {
+                SamuraiId = samurai.Id,
+                BattleId = battle.Id
+            };
+
+            _context.Add(samuraiBattle);
+
+            _context.SaveChanges();
         }
 
         private static void UpdateQuoteDisconnected()
