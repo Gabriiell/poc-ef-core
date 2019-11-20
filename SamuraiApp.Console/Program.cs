@@ -16,7 +16,7 @@ namespace SamuraiApp.Console
 
         static void Main(string[] args)
         {
-            //InsertSamurai();
+            InsertSamurai();
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
             //CreateSamuraiWithQuotes();
@@ -25,7 +25,7 @@ namespace SamuraiApp.Console
             //UpdateQuoteDisconnected();
             //QueryQuotes();
             //TestPerformance();
-            AddBattleToSamurai();
+            //AddBattleToSamurai();
 
             System.Console.ReadKey();
         }
@@ -168,10 +168,14 @@ namespace SamuraiApp.Console
         {
             var samurai = new Samurai
             {
-                Name = "Pepe"
+                Name = "Ronin"
             };
 
+            var now = DateTime.Now;
+
             _context.Samurais.Add(samurai);
+            _context.Entry(samurai).Property("Created").CurrentValue = now;
+            _context.Entry(samurai).Property("LastModified").CurrentValue = now;
             _context.SaveChanges();
         }
 
