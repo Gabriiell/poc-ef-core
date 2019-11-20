@@ -35,6 +35,8 @@ namespace SamuraiApp.Data
             modelBuilder.Entity<SamuraiBattle>().HasKey(s => new { s.SamuraiId, s.BattleId });
             modelBuilder.Entity<Battle>().Property(b => b.StartDate).HasColumnType("Date");
             modelBuilder.Entity<Battle>().Property(b => b.EndDate).HasColumnType("Date");
+            modelBuilder.Entity<Samurai>().Property<DateTime>("Created");
+            modelBuilder.Entity<Samurai>().Property<DateTime>("LastModified");
         }
     }
 }
