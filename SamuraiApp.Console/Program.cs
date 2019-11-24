@@ -16,7 +16,8 @@ namespace SamuraiApp.Console
 
         static void Main(string[] args)
         {
-            InsertSamurai();
+            QueryLastWeekSamurais();
+            //InsertSamurai();
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
             //CreateSamuraiWithQuotes();
@@ -141,6 +142,15 @@ namespace SamuraiApp.Console
             var samurais = _context.Samurais.ToList();
             samurais.ForEach(s => s.Name += " San");
             _context.SaveChanges();
+        }
+
+        private static void QueryLastWeekSamurais()
+        {
+            var oneWeekAgo = DateTime.Now.AddDays(-7);
+
+            var samurais = _context.Samurais
+                .Where(s => EF.Property<DateTime>(s, "Created") >= oneWeekAgo)
+                .ToList();
         }
 
         private static void SimpleQuerySamurais()
