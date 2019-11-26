@@ -16,8 +16,8 @@ namespace SamuraiApp.Console
 
         static void Main(string[] args)
         {
+            InsertSamurai();
             QueryLastWeekSamurais();
-            //InsertSamurai();
             //InsertMultipleSamurai();
             //InsertMultipleObjects();
             //CreateSamuraiWithQuotes();
@@ -178,7 +178,8 @@ namespace SamuraiApp.Console
         {
             var samurai = new Samurai
             {
-                Name = "Ronin"
+                Name = "Ronin",
+                BetterName = new PersonFullName("Ronin", "Masashi")
             };
 
             var now = DateTime.Now;

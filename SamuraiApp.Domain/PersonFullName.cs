@@ -5,6 +5,8 @@ namespace SamuraiApp.Domain
 {
     public class PersonFullName
     {
+        private PersonFullName() { }
+
         public PersonFullName(string givenName, string surName)
         {
             GivenName = givenName;
